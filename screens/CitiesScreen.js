@@ -11,6 +11,7 @@ import {
 } from "react-native";
 
 import HeaderInput from "../components/HeaderInput";
+import CityBox from "../components/CityBox";
 
 export default function CitiesScreen(props) {
   const [searchText, setSeacrhText] = useState("");
@@ -38,6 +39,7 @@ export default function CitiesScreen(props) {
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
           <Text>Cities Screen</Text>
+          <CityBox />
           <Button
             title="ddsa"
             onPress={() => {

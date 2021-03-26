@@ -6,7 +6,7 @@ const CityBox = (props) => {
   return (
     <View style={styles.CitiBox}>
       <Text style={styles.CitiBoxName}>{props.cityName}</Text>
-      <Feather style={styles.CityIcon} name="sun" size={32} color="black" />
+      <Feather style={styles.CityIcon} name="sun" size={35} color="black" />
       <Text style={styles.temperature}>+30 C</Text>
     </View>
   );

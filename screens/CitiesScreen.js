@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 
 import HeaderInput from "../components/HeaderInput";
@@ -16,12 +17,30 @@ import CityBox from "../components/CityBox";
 export default function CitiesScreen(props) {
   const [searchText, setSeacrhText] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
+
+  const Hi = async (text) => {
+    Alert.alert(text);
+
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${text}&appid=2ecc8cdc74d9e8fdb6f53505f378ea75`
+    );
+    const resData = await res.json();
+    console.log(resData);
+  };
+  const timerRef = useRef(null);
   const changeTextHandler = (text) => {
     setSeacrhText(text);
   };
 
   useEffect(() => {
     setIsEmpty(searchText === "" ? false : true);
+    if (searchText.length != 0) {
+      clearTimeout(timerRef.current);
+      timerRef.current = setTimeout((text) => Hi(searchText), 150);
+      if (searchText.length <= 1) {
+        clearTimeout(timerRef.current);
+      }
+    }
   }),
     [changeTextHandler];
 

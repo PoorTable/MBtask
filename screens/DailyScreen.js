@@ -202,6 +202,7 @@ export const screenOptions = (navData) => {
   const tit = useSelector((state) => state.weather.CityName);
   return {
     title: tit,
+    headerTitleAlign: "left",
   };
 };
 

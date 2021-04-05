@@ -28,7 +28,7 @@ const CityBox = (props) => {
           />
           <Text style={styles.temperature}>
             {" "}
-            {Math.round(props.temp) >= 0 ? "+" : ""}
+            {Math.round(props.temp) > 0 ? "+" : ""}
             {Math.round(props.temp)} C
           </Text>
         </View>

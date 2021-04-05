@@ -2,13 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Modal, ActivityIndicator } from "react-native";
 
 const ModalActivityIndicator = (props) => {
-  const {
-    show = false,
-    color = "green",
-    backgroundColor = "white",
-    dimLights = 0.6,
-    loadingMessage = "Doing stuff ...",
-  } = props;
+  const { show = false, color = "green", dimLights = 0.6 } = props;
   return (
     <Modal transparent={true} animationType="none" visible={show}>
       <View
@@ -22,7 +16,6 @@ const ModalActivityIndicator = (props) => {
         <View
           style={{
             padding: 13,
-            backgroundColor: `${backgroundColor}`,
             borderRadius: 13,
           }}
         >

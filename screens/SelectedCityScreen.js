@@ -6,14 +6,20 @@ import moment from "moment";
 import { Fontisto } from "@expo/vector-icons";
 
 const SelectedCityScreen = (props) => {
+  let x = new Date();
+  var currentTimeZoneOffset = x.getTimezoneOffset() * 60 * 1000;
   const date = moment(
     new Date(
-      props.route.params.City.time + props.route.params.City.tz - 10800000
+      props.route.params.City.time +
+        props.route.params.City.tz -
+        currentTimeZoneOffset
     )
   ).format("MMMM, Do");
   const time = moment(
     new Date(
-      props.route.params.City.time + props.route.params.City.tz - 10800000
+      props.route.params.City.time +
+        props.route.params.City.tz -
+        currentTimeZoneOffset
     )
   ).format("LT");
 
@@ -28,7 +34,7 @@ const SelectedCityScreen = (props) => {
         color="black"
       />
       <Text style={styles.time}>
-        {Math.round(props.route.params.City.temperature) >= 0 ? "+" : ""}
+        {Math.round(props.route.params.City.temperature) > 0 ? "+" : ""}
         {Math.round(props.route.params.City.temperature)} C
       </Text>
     </SafeAreaView>

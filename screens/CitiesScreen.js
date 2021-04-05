@@ -1,73 +1,115 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   SafeAreaView,
   StyleSheet,
   Text,
   View,
   Button,
-  TextInput,
+  FlatList,
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
 } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import * as weatherActions from "../store/weatheractions";
 
 import HeaderInput from "../components/HeaderInput";
 import CityBox from "../components/CityBox";
+import City from "../models/City";
 
-export default function CitiesScreen(props) {
+export default function CitiesScreen({ navigation }) {
+  useEffect(() => {
+    const unsubscribe = navigation
+      .dangerouslyGetParent()
+      .addListener("tabPress", (e) => {
+        e.preventDefault();
+
+        pTRHandler();
+        navigation.navigate("Cities");
+      });
+
+    return unsubscribe;
+  }, [navigation]);
+
   const [searchText, setSeacrhText] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [city, setCity] = useState();
+  const dispatch = useDispatch();
+  const Cities = useSelector((state) => state.weather.cities);
+  const Citiy = useSelector((state) => state.weather.city);
 
-  const Hi = async (text) => {
-    Alert.alert(text);
-
-    const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${text}&appid=2ecc8cdc74d9e8fdb6f53505f378ea75`
-    );
-    const resData = await res.json();
-    console.log(resData);
-  };
   const timerRef = useRef(null);
   const changeTextHandler = (text) => {
     setSeacrhText(text);
   };
+  const ClearText = () => {
+    setSeacrhText("");
+  };
 
   useEffect(() => {
     setIsEmpty(searchText === "" ? false : true);
-    if (searchText.length != 0) {
+    if (searchText != "") {
       clearTimeout(timerRef.current);
-      timerRef.current = setTimeout((text) => Hi(searchText), 150);
-      if (searchText.length <= 1) {
+      timerRef.current = setTimeout(async () => {
+        setIsLoaded(false);
+        await dispatch(weatherActions.fetchCity(searchText));
+        setIsLoaded(true);
+        console.log(Citiy);
+      }, 500);
+      if (searchText === "") {
         clearTimeout(timerRef.current);
       }
     }
-  }),
-    [changeTextHandler];
+  }, [searchText]);
+
+  const pTRHandler = async () => {
+    setIsRefreshing(true);
+    await dispatch(weatherActions.fetchCities());
+    setIsRefreshing(false);
+  };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.searchBar}>
-          <HeaderInput
-            value={searchText}
-            onChangeText={(text) => changeTextHandler(text)}
-            isEmpty={isEmpty}
-          />
+    <View style={styles.container}>
+      <View style={styles.searchBar}>
+        <HeaderInput
+          value={searchText}
+          onChangeText={(text) => changeTextHandler(text)}
+          isEmpty={isEmpty}
+          onClick={() => {
+            ClearText();
+          }}
+        />
+      </View>
+
+      {searchText === "" ? (
+        <FlatList
+          data={Cities}
+          renderItem={(itemData) => (
+            <CityBox
+              cityName={itemData.item.name}
+              temp={itemData.item.temperature}
+              wicon={itemData.item.wcondition}
+              isRefresh={isRefreshing}
+            />
+          )}
+          numColumns={2}
+          refreshing={isRefreshing}
+          onRefresh={() => {
+            pTRHandler();
+          }}
+        />
+      ) : isLoaded ? (
+        <View>
+          <Text>{Citiy.name}</Text>
         </View>
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Text>Cities Screen</Text>
-          <CityBox />
-          <Button
-            title="ddsa"
-            onPress={() => {
-              props.navigation.navigate("SelectedCity");
-            }}
-          />
+      ) : (
+        <View>
+          <Text></Text>
         </View>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+      )}
+    </View>
   );
 }
 
@@ -80,7 +122,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    height: 50,
+    height: 90,
   },
   cancel: {
     display: "flex",

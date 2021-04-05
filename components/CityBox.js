@@ -1,44 +1,65 @@
-import { SafeAreaView, StyleSheet, Text, View, icon } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  icon,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import React from "react";
-import { Feather } from "@expo/vector-icons";
+import { Fontisto } from "@expo/vector-icons";
 
 const CityBox = (props) => {
   return (
-    <View style={styles.CitiBox}>
-      <Text style={styles.CitiBoxName}>{props.cityName}</Text>
-      <Feather style={styles.CityIcon} name="sun" size={35} color="black" />
-      <Text style={styles.temperature}>+30 C</Text>
-    </View>
+    <TouchableOpacity style={styles.CitiBox}>
+      {props.isRefresh ? (
+        <View style={styles.centred}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      ) : (
+        <View>
+          <Text style={styles.CitiBoxName}>{props.cityName}</Text>
+          <Fontisto
+            style={styles.CityIcon}
+            name={props.wicon}
+            size={35}
+            color="black"
+          />
+          <Text style={styles.temperature}>{Math.round(props.temp)}</Text>
+        </View>
+      )}
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   CitiBox: {
-    borderRadius: 5,
+    flex: 1,
+
+    margin: 15,
+    height: 120,
     borderWidth: 2,
-    borderColor: "black",
-    width: 140,
-    height: 124,
-    // display:'flex',
-    //  flexDirection:'column',
-    // justifyContent:'center',
+    borderRadius: 5,
   },
   CitiBoxName: {
     fontSize: 20,
     marginTop: 10,
-    // borderWidth:2,
     textAlign: "center",
   },
   CityIcon: {
     marginTop: 9,
-    // borderWidth:2,
     textAlign: "center",
   },
   temperature: {
     fontSize: 17,
     marginTop: 5,
-    // borderWidth:2,
     textAlign: "center",
+  },
+  centred: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

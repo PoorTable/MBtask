@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   View,
   Platform,
+  TouchableOpacity,
 } from "react-native";
 import { EvilIcons, Ionicons } from "@expo/vector-icons";
 
@@ -19,20 +20,28 @@ const HeaderInput = (props) => {
           color="black"
         />
       </View>
-      <TextInput {...props} style={styles.input} editable maxLength={20} />
-      {props.isEmpty ? (
-        <Ionicons
-          name="close-circle-outline"
-          size={25}
-          style={{ ...props.style }}
-        />
-      ) : (
-        <Ionicons
-          name="close-circle-outline"
-          size={25}
-          style={{ ...props.style, ...styles.back }}
-        />
-      )}
+      <TextInput
+        {...props}
+        style={styles.input}
+        editable
+        maxLength={20}
+        placeholder="Enter city here..."
+      />
+      <TouchableOpacity onPress={props.onClick}>
+        {props.isEmpty ? (
+          <Ionicons
+            name="close-circle-outline"
+            size={25}
+            style={{ ...props.style }}
+          />
+        ) : (
+          <Ionicons
+            name="close-circle-outline"
+            size={25}
+            style={{ ...props.style, ...styles.back }}
+          />
+        )}
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

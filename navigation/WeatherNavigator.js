@@ -6,9 +6,15 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import CitiesScreen, {
   screenOptions as CitiesScreenOptions,
 } from "../screens/CitiesScreen";
-import DailyScreen from "../screens/DailyScreen";
-import HourlyScreen from "../screens/HourlyScreen";
-import SelectedCityScreen from "../screens/SelectedCityScreen";
+import DailyScreen, {
+  screenOptions as DailyScreenOptions,
+} from "../screens/DailyScreen";
+import HourlyScreen, {
+  screenOptions as HourlyScreenOptions,
+} from "../screens/HourlyScreen";
+import SelectedCityScreen, {
+  screenOptions as SelectedCityScreenOptions,
+} from "../screens/SelectedCityScreen";
 
 const WeatherStack = createStackNavigator();
 
@@ -20,8 +26,37 @@ export const WS = () => {
         component={CitiesScreen}
         options={CitiesScreenOptions}
       />
-      <WeatherStack.Screen name="SelectedCity" component={SelectedCityScreen} />
+      <WeatherStack.Screen
+        name="SelectedCity"
+        component={SelectedCityScreen}
+        options={SelectedCityScreenOptions}
+      />
     </WeatherStack.Navigator>
+  );
+};
+
+const DS = createStackNavigator();
+export const DailyStack = () => {
+  return (
+    <DS.Navigator>
+      <DS.Screen
+        name="Daily"
+        component={DailyScreen}
+        options={DailyScreenOptions}
+      />
+    </DS.Navigator>
+  );
+};
+const HS = createStackNavigator();
+export const HourlyStack = () => {
+  return (
+    <HS.Navigator>
+      <HS.Screen
+        name="Hourly"
+        component={HourlyScreen}
+        options={HourlyScreenOptions}
+      />
+    </HS.Navigator>
   );
 };
 
@@ -47,7 +82,7 @@ export const BottomTabs = () => {
       />
       <BottomTab.Screen
         name="Daily"
-        component={DailyScreen}
+        component={DailyStack}
         options={{
           tabBarLabel: "Daily",
           tabBarIcon: ({ color }) => (
@@ -57,7 +92,7 @@ export const BottomTabs = () => {
       />
       <BottomTab.Screen
         name="Hourly"
-        component={HourlyScreen}
+        component={HourlyStack}
         options={{
           tabBarLabel: "Hourly",
           tabBarIcon: ({ color }) => (

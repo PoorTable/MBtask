@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useCallback } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Alert } from "react-native";
 import { BottomTabs } from "./navigation/WeatherNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStore, combineReducers, applyMiddleware } from "redux";
@@ -33,9 +33,15 @@ const App = () => {
       try {
         await SplashScreen.preventAutoHideAsync();
 
-        await dispatch(weatherActions.fetchCities());
-
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        try {
+          await dispatch(weatherActions.fetchCities());
+        } catch (error) {
+          Alert.alert("Error", "Something went wrong during network call", [
+            { text: "Okay" },
+          ]);
+        } finally {
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+        }
       } catch (e) {
         console.warn(e);
       } finally {
@@ -47,9 +53,11 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <NavigationContainer>
-      <BottomTabs />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <BottomTabs />
+      </NavigationContainer>
+    </Provider>
   );
 };
 

@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
   Button,
   FlatList,
   TouchableWithoutFeedback,
@@ -15,7 +16,8 @@ import * as weatherActions from "../store/weatheractions";
 
 import HeaderInput from "../components/HeaderInput";
 import CityBox from "../components/CityBox";
-import City from "../models/City";
+import CityLine from "../components/CityLine";
+import ModalActivityIndcator from "../components/ModalActivityIndicator";
 
 export default function CitiesScreen({ navigation }) {
   useEffect(() => {
@@ -33,19 +35,23 @@ export default function CitiesScreen({ navigation }) {
 
   const [searchText, setSeacrhText] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [city, setCity] = useState();
+  const [isLoaded, setIsLoaded] = useState(false);
   const dispatch = useDispatch();
   const Cities = useSelector((state) => state.weather.cities);
-  const Citiy = useSelector((state) => state.weather.city);
+  var Citiy = useSelector((state) => state.weather.city);
+  const err = useSelector((state) => state.weather.error);
 
   const timerRef = useRef(null);
   const changeTextHandler = (text) => {
     setSeacrhText(text);
   };
+
   const ClearText = () => {
+    setIsLoaded(false);
     setSeacrhText("");
+    Citiy = null;
   };
 
   useEffect(() => {
@@ -53,10 +59,11 @@ export default function CitiesScreen({ navigation }) {
     if (searchText != "") {
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(async () => {
-        setIsLoaded(false);
+        setIsLoading(true);
         await dispatch(weatherActions.fetchCity(searchText));
+        setIsLoading(false);
         setIsLoaded(true);
-        console.log(Citiy);
+        Citiy = console.log(Citiy);
       }, 500);
       if (searchText === "") {
         clearTimeout(timerRef.current);
@@ -65,9 +72,20 @@ export default function CitiesScreen({ navigation }) {
   }, [searchText]);
 
   const pTRHandler = async () => {
-    setIsRefreshing(true);
-    await dispatch(weatherActions.fetchCities());
-    setIsRefreshing(false);
+    try {
+      setIsLoading(true);
+      await dispatch(weatherActions.fetchCities());
+    } catch (error) {
+      Alert.alert("Error", "Something went wrong during network call", [
+        { text: "Okay" },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const SelectCityHandler = async (City) => {
+    navigation.navigate("SelectedCity", { City: City });
   };
 
   return (
@@ -83,7 +101,9 @@ export default function CitiesScreen({ navigation }) {
         />
       </View>
 
-      {searchText === "" ? (
+      {isLoading ? (
+        <ModalActivityIndcator show={true} />
+      ) : searchText === "" ? (
         <FlatList
           data={Cities}
           renderItem={(itemData) => (
@@ -92,6 +112,9 @@ export default function CitiesScreen({ navigation }) {
               temp={itemData.item.temperature}
               wicon={itemData.item.wcondition}
               isRefresh={isRefreshing}
+              onClick={() => {
+                SelectCityHandler(itemData.item);
+              }}
             />
           )}
           numColumns={2}
@@ -100,13 +123,32 @@ export default function CitiesScreen({ navigation }) {
             pTRHandler();
           }}
         />
-      ) : isLoaded ? (
-        <View>
-          <Text>{Citiy.name}</Text>
-        </View>
-      ) : (
+      ) : !isLoaded ? (
         <View>
           <Text></Text>
+        </View>
+      ) : Citiy.name === undefined ? (
+        <View style={styles.container}>
+          <View style={styles.centred}>
+            <Image source={require("../assets/NoData.png")} />
+            <Text style={styles.text}>No data for {Citiy.id}</Text>
+          </View>
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.sr}>
+            <Text style={styles.text}>Search results</Text>
+          </View>
+          <View style={styles.results}>
+            <CityLine
+              onClick={() => {
+                SelectCityHandler(Citiy);
+              }}
+              name={Citiy.name}
+              temp={Citiy.temperature}
+              wicon={Citiy.wcondition}
+            />
+          </View>
         </View>
       )}
     </View>
@@ -117,6 +159,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  centred: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  text: {
+    paddingVertical: 5,
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  sr: {
+    marginVertical: 10,
+    width: "90%",
+    marginStart: "5%",
+  },
+  results: { alignItems: "center", justifyContent: "center" },
   searchBar: {
     marginTop: 15,
     width: "100%",

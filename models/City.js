@@ -1,9 +1,11 @@
 class City {
-  constructor(id, name, temperature, wcondition) {
+  constructor(id, name, temperature, wcondition, time, tz) {
     this.id = id;
     this.name = name;
     this.temperature = temperature;
     this.wcondition = wtype(wcondition);
+    this.time = time * 1000;
+    this.tz = tz * 1000;
   }
 }
 

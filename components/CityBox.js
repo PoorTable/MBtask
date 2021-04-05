@@ -12,7 +12,7 @@ import { Fontisto } from "@expo/vector-icons";
 
 const CityBox = (props) => {
   return (
-    <TouchableOpacity style={styles.CitiBox}>
+    <TouchableOpacity style={styles.CitiBox} onPress={props.onClick}>
       {props.isRefresh ? (
         <View style={styles.centred}>
           <ActivityIndicator size="large" color="#0000ff" />
@@ -26,7 +26,11 @@ const CityBox = (props) => {
             size={35}
             color="black"
           />
-          <Text style={styles.temperature}>{Math.round(props.temp)}</Text>
+          <Text style={styles.temperature}>
+            {" "}
+            {Math.round(props.temp) >= 0 ? "+" : ""}
+            {Math.round(props.temp)} C
+          </Text>
         </View>
       )}
     </TouchableOpacity>

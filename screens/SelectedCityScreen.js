@@ -8,18 +8,19 @@ import { Fontisto } from "@expo/vector-icons";
 const SelectedCityScreen = (props) => {
   let x = new Date();
   var currentTimeZoneOffset = x.getTimezoneOffset() * 60 * 1000;
+
   const date = moment(
     new Date(
       props.route.params.City.time +
-        props.route.params.City.tz -
-        currentTimeZoneOffset
+        currentTimeZoneOffset +
+        props.route.params.City.tz
     )
   ).format("MMMM, Do");
   const time = moment(
     new Date(
       props.route.params.City.time +
-        props.route.params.City.tz -
-        currentTimeZoneOffset
+        currentTimeZoneOffset +
+        props.route.params.City.tz
     )
   ).format("LT");
 

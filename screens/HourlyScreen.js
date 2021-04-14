@@ -46,6 +46,7 @@ const HourlyScreen = ({ navigation }) => {
     console.log(ps);
     if (status === "granted") {
       setPs(true);
+      getLoc();
     }
   };
   useEffect(() => {
@@ -107,12 +108,6 @@ const HourlyScreen = ({ navigation }) => {
   useEffect(() => {
     let f = async () => {
       getPermStatus();
-
-      if (!ps) {
-        getPerm();
-      } else {
-        getLoc();
-      }
     };
     f();
   }, []);

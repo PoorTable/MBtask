@@ -32,7 +32,6 @@ const DailyScreen = ({ navigation }) => {
     );
     if (status === "granted") {
       setPs(true);
-      getLoc();
     } else {
       setPs(false);
     }
@@ -46,6 +45,7 @@ const DailyScreen = ({ navigation }) => {
     console.log(ps);
     if (status === "granted") {
       setPs(true);
+      getLoc();
     }
   };
   useEffect(() => {
@@ -54,11 +54,6 @@ const DailyScreen = ({ navigation }) => {
       .addListener("tabPress", (e) => {
         e.preventDefault();
         getPermStatus();
-
-        if (ps) {
-          getLoc();
-        }
-
         navigation.navigate("Daily");
       });
 
@@ -107,12 +102,6 @@ const DailyScreen = ({ navigation }) => {
   useEffect(() => {
     let f = async () => {
       getPermStatus();
-
-      if (!ps) {
-        getPerm();
-      } else {
-        getLoc();
-      }
     };
     f();
   }, []);

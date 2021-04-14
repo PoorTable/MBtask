@@ -1,16 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Button,
-  FlatList,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Alert,
-} from "react-native";
+import { StyleSheet, Text, View, Image, FlatList, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import * as weatherActions from "../store/weatheractions";
 
@@ -41,7 +30,6 @@ export default function CitiesScreen({ navigation }) {
   const dispatch = useDispatch();
   const Cities = useSelector((state) => state.weather.cities);
   var Citiy = useSelector((state) => state.weather.city);
-  const err = useSelector((state) => state.weather.error);
 
   const timerRef = useRef(null);
   const changeTextHandler = (text) => {

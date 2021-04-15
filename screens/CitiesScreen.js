@@ -42,10 +42,18 @@ export default function CitiesScreen({ navigation }) {
     Citiy = null;
   };
 
+  function isNullOrWhitespace(input) {
+    if (typeof input === "undefined" || input == null) return true;
+
+    return input.replace(/\s/g, "").length < 1;
+  }
+
   useEffect(() => {
     setIsEmpty(searchText === "" ? false : true);
-    if (searchText != "") {
+
+    if (!isNullOrWhitespace(searchText)) {
       clearTimeout(timerRef.current);
+      setSeacrhText(searchText.trim());
       timerRef.current = setTimeout(async () => {
         setIsLoading(true);
         await dispatch(weatherActions.fetchCity(searchText));

@@ -1,6 +1,10 @@
 import React from "react";
+import { Platform } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from "@react-navigation/stack";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
 import CitiesScreen, {
@@ -20,7 +24,14 @@ const WeatherStack = createStackNavigator();
 
 export const WS = () => {
   return (
-    <WeatherStack.Navigator>
+    <WeatherStack.Navigator
+      screenOptions={{
+        cardStyleInterpolator:
+          Platform.OS === "Android"
+            ? CardStyleInterpolators.forFadeFromBottomAndroid
+            : CardStyleInterpolators.forVerticalIOS,
+      }}
+    >
       <WeatherStack.Screen
         name="Cities"
         component={CitiesScreen}
@@ -38,7 +49,14 @@ export const WS = () => {
 const DS = createStackNavigator();
 export const DailyStack = () => {
   return (
-    <DS.Navigator>
+    <DS.Navigator
+      screenOptions={{
+        cardStyleInterpolator:
+          Platform.OS === "Android"
+            ? CardStyleInterpolators.forFadeFromBottomAndroid
+            : CardStyleInterpolators.forVerticalIOS,
+      }}
+    >
       <DS.Screen
         name="Daily"
         component={DailyScreen}
@@ -50,7 +68,14 @@ export const DailyStack = () => {
 const HS = createStackNavigator();
 export const HourlyStack = () => {
   return (
-    <HS.Navigator>
+    <HS.Navigator
+      screenOptions={{
+        cardStyleInterpolator:
+          Platform.OS === "Android"
+            ? CardStyleInterpolators.forFadeFromBottomAndroid
+            : CardStyleInterpolators.forVerticalIOS,
+      }}
+    >
       <HS.Screen
         name="Hourly"
         component={HourlyScreen}

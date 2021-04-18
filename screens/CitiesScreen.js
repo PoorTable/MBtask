@@ -55,10 +55,17 @@ export default function CitiesScreen({ navigation }) {
       clearTimeout(timerRef.current);
       setSeacrhText(searchText.trim());
       timerRef.current = setTimeout(async () => {
-        setIsLoading(true);
-        await dispatch(weatherActions.fetchCity(searchText));
-        setIsLoading(false);
-        setIsLoaded(true);
+        try {
+          setIsLoading(true);
+          await dispatch(weatherActions.fetchCity(searchText));
+        } catch (error) {
+          Alert.alert("Error", "Something went wrong during network call", [
+            { text: "Okay" },
+          ]);
+        } finally {
+          setIsLoading(false);
+          setIsLoaded(true);
+        }
         Citiy = console.log(Citiy);
       }, 500);
       if (searchText === "") {

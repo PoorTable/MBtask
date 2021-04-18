@@ -25,6 +25,7 @@ const HourlyScreen = ({ navigation }) => {
   const [isLoading, setisLoading] = useState(false);
   const dispatch = useDispatch();
   const Cities = useSelector((state) => state.weather.Hourly);
+  const np = useSelector((state) => state.weather.notPerm);
   var Cities1 = Cities;
   const getPerm = async () => {
     const { status, permissions } = await Permissions.askAsync(
@@ -37,7 +38,6 @@ const HourlyScreen = ({ navigation }) => {
       setPs(false);
     }
   };
-
   const getPermStatus = async () => {
     const { status, expires, permissions } = await Permissions.getAsync(
       Permissions.LOCATION
@@ -46,7 +46,14 @@ const HourlyScreen = ({ navigation }) => {
     console.log(ps);
     if (status === "granted") {
       setPs(true);
-      getLoc();
+      console.log(ps);
+      try {
+        setisLoading(true);
+        getLoc();
+      } catch (error) {
+      } finally {
+        setisLoading(false);
+      }
     }
   };
   useEffect(() => {
@@ -79,12 +86,11 @@ const HourlyScreen = ({ navigation }) => {
       setLocation(loca);
     } catch {
       setPs(false);
+      weatherActions.setPermission();
       Cities1 = [];
       console.log(Cities1);
       setisLoading(false);
       return;
-    } finally {
-      setisLoading(false);
     }
     try {
       await dispatch(
@@ -109,12 +115,7 @@ const HourlyScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    let f = async () => {
-      setisLoading(true);
-      await getPermStatus();
-      setisLoading(false);
-    };
-    f();
+    getLoc();
   }, []);
   return (
     <SafeAreaView style={styles.fl}>

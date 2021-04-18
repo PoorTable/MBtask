@@ -32,6 +32,7 @@ const DailyScreen = ({ navigation }) => {
     );
     if (status === "granted") {
       setPs(true);
+      getLoc();
     } else {
       setPs(false);
     }
@@ -67,12 +68,11 @@ const DailyScreen = ({ navigation }) => {
       setLocation(loca);
     } catch {
       setPs(false);
+      weatherActions.setPermission();
       Cities1 = [];
       console.log(Cities1);
       setisLoading(false);
       return;
-    } finally {
-      setisLoading(false);
     }
     try {
       await dispatch(
@@ -100,6 +100,7 @@ const DailyScreen = ({ navigation }) => {
     let f = async () => {
       setisLoading(true);
       await getPermStatus();
+      getLoc();
       setisLoading(false);
     };
     f();

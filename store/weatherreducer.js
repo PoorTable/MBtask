@@ -16,7 +16,7 @@ const initialState = {
   CityName: "",
   Daily: [],
   Hourly: [],
-  hasPerm: false,
+  notPerm: false,
 };
 
 export default (state = initialState, action) => {
@@ -35,7 +35,7 @@ export default (state = initialState, action) => {
     case SET_PERMISSION:
       return {
         ...state,
-        hasPerm: true,
+        notPerm: true,
       };
     case GET_CITIES:
       return {

@@ -25,7 +25,7 @@ const DailyScreen = ({ navigation }) => {
   const [isLoading, setisLoading] = useState(false);
   const dispatch = useDispatch();
   const Cities = useSelector((state) => state.weather.Daily);
-
+  var Cities1 = Cities;
   const getPerm = async () => {
     const { status, permissions } = await Permissions.askAsync(
       Permissions.LOCATION
@@ -62,8 +62,18 @@ const DailyScreen = ({ navigation }) => {
 
   const getLoc = async () => {
     setisLoading(true);
-    let loca = await Location.getCurrentPositionAsync({});
-    setLocation(loca);
+    try {
+      var loca = await Location.getCurrentPositionAsync({});
+      setLocation(loca);
+    } catch {
+      setPs(false);
+      Cities1 = [];
+      console.log(Cities1);
+      setisLoading(false);
+      return;
+    } finally {
+      setisLoading(false);
+    }
     try {
       await dispatch(
         weatherActions.getCityName(loca.coords.latitude, loca.coords.longitude)
@@ -71,6 +81,8 @@ const DailyScreen = ({ navigation }) => {
       await dispatch(
         weatherActions.selectDH(loca.coords.latitude, loca.coords.longitude)
       );
+      setisLoading(false);
+      return;
     } catch (error) {
       Alert.alert("Error", "Something went wrong during network call", [
         { text: "Okay" },
@@ -81,27 +93,14 @@ const DailyScreen = ({ navigation }) => {
   };
 
   const pTRHandler = async () => {
-    try {
-      setisLoading(true);
-      let loca = await Location.getCurrentPositionAsync({});
-      await dispatch(
-        weatherActions.getCityName(loca.coords.latitude, loca.coords.longitude)
-      );
-      await dispatch(
-        weatherActions.selectDH(loca.coords.latitude, loca.coords.longitude)
-      );
-    } catch (error) {
-      Alert.alert("Error", "Something went wrong during network call", [
-        { text: "Okay" },
-      ]);
-    } finally {
-      setisLoading(false);
-    }
+    getLoc();
   };
 
   useEffect(() => {
     let f = async () => {
-      getPermStatus();
+      setisLoading(true);
+      await getPermStatus();
+      setisLoading(false);
     };
     f();
   }, []);

@@ -19,7 +19,7 @@ export const getCityName = (lat, lon) => {
     if (!response.ok) {
       throw new Error("Something went wrong!");
     }
-
+    console.log(response.status);
     const resData = await response.json();
 
     const loadedCity = new City(
@@ -44,7 +44,7 @@ export const selectDH = (lat, lon) => {
     if (!response.ok) {
       throw new Error("Something went wrong!");
     }
-
+    console.log(response.status);
     const resData = await response.json();
     const Hourly = resData.hourly.slice(0, 24);
     const loadedHourly = [];
@@ -100,6 +100,7 @@ export const fetchCities = () => {
     if (!response.ok) {
       throw new Error("Something went wrong!");
     }
+    console.log(response.status);
 
     const resData = await response.json();
     const Cities = resData.list;
@@ -127,7 +128,7 @@ export const fetchCity = (searchText) => {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${searchText}&units=metric&appid=2ecc8cdc74d9e8fdb6f53505f378ea75`
     );
-
+    console.log(response.status);
     if (!response.ok) {
       var loadedCity = new City(searchText, response.message, 1, searchText, 1);
       dispatch({ type: GET_CITY, City: loadedCity });

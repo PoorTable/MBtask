@@ -25,7 +25,7 @@ const HourlyScreen = ({ navigation }) => {
   const [isLoading, setisLoading] = useState(false);
   const dispatch = useDispatch();
   const Cities = useSelector((state) => state.weather.Hourly);
-
+  var Cities1 = Cities;
   const getPerm = async () => {
     const { status, permissions } = await Permissions.askAsync(
       Permissions.LOCATION
@@ -57,7 +57,13 @@ const HourlyScreen = ({ navigation }) => {
         getPermStatus();
 
         if (ps) {
-          getLoc();
+          setisLoading(true);
+          try {
+            getLoc();
+          } catch {
+          } finally {
+            setisLoading(false);
+          }
         }
 
         navigation.navigate("Hourly");
@@ -68,8 +74,18 @@ const HourlyScreen = ({ navigation }) => {
 
   const getLoc = async () => {
     setisLoading(true);
-    let loca = await Location.getCurrentPositionAsync({});
-    setLocation(loca);
+    try {
+      var loca = await Location.getCurrentPositionAsync({});
+      setLocation(loca);
+    } catch {
+      setPs(false);
+      Cities1 = [];
+      console.log(Cities1);
+      setisLoading(false);
+      return;
+    } finally {
+      setisLoading(false);
+    }
     try {
       await dispatch(
         weatherActions.getCityName(loca.coords.latitude, loca.coords.longitude)
@@ -77,6 +93,8 @@ const HourlyScreen = ({ navigation }) => {
       await dispatch(
         weatherActions.selectDH(loca.coords.latitude, loca.coords.longitude)
       );
+      setisLoading(false);
+      return;
     } catch (error) {
       Alert.alert("Error", "Something went wrong during network call", [
         { text: "Okay" },
@@ -87,27 +105,14 @@ const HourlyScreen = ({ navigation }) => {
   };
 
   const pTRHandler = async () => {
-    try {
-      setisLoading(true);
-      let loca = await Location.getCurrentPositionAsync({});
-      await dispatch(
-        weatherActions.getCityName(loca.coords.latitude, loca.coords.longitude)
-      );
-      await dispatch(
-        weatherActions.selectDH(loca.coords.latitude, loca.coords.longitude)
-      );
-    } catch (error) {
-      Alert.alert("Error", "Something went wrong during network call", [
-        { text: "Okay" },
-      ]);
-    } finally {
-      setisLoading(false);
-    }
+    getLoc();
   };
 
   useEffect(() => {
     let f = async () => {
-      getPermStatus();
+      setisLoading(true);
+      await getPermStatus();
+      setisLoading(false);
     };
     f();
   }, []);
@@ -115,7 +120,7 @@ const HourlyScreen = ({ navigation }) => {
     <SafeAreaView style={styles.fl}>
       {isLoading ? (
         <ModalActivityIndcator show={true} />
-      ) : Cities.length > 0 ? (
+      ) : ps ? (
         <View>
           <View style={styles.sr}>
             <FlatList

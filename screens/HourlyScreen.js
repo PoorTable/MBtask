@@ -46,14 +46,7 @@ const HourlyScreen = ({ navigation }) => {
     console.log(ps);
     if (status === "granted") {
       setPs(true);
-      console.log(ps);
-      try {
-        setisLoading(true);
-        getLoc();
-      } catch (error) {
-      } finally {
-        setisLoading(false);
-      }
+      getLoc();
     }
   };
   useEffect(() => {
@@ -115,7 +108,13 @@ const HourlyScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    getLoc();
+    let f = async () => {
+      setisLoading(true);
+      await getPermStatus();
+      getLoc();
+      setisLoading(false);
+    };
+    f();
   }, []);
   return (
     <SafeAreaView style={styles.fl}>

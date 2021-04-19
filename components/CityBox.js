@@ -40,7 +40,6 @@ const CityBox = (props) => {
 const styles = StyleSheet.create({
   CitiBox: {
     flex: 1,
-
     margin: 15,
     height: 120,
     borderWidth: 2,

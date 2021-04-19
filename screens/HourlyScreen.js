@@ -37,7 +37,8 @@ const HourlyScreen = ({ navigation }) => {
     } else {
       setPs(false);
     }
-  };
+  }; 
+
   const getPermStatus = async () => {
     const { status, expires, permissions } = await Permissions.getAsync(
       Permissions.LOCATION
@@ -49,6 +50,7 @@ const HourlyScreen = ({ navigation }) => {
       getLoc();
     }
   };
+
   useEffect(() => {
     const unsubscribe = navigation
       .dangerouslyGetParent()
@@ -116,6 +118,7 @@ const HourlyScreen = ({ navigation }) => {
     };
     f();
   }, []);
+  
   return (
     <SafeAreaView style={styles.fl}>
       {isLoading ? (

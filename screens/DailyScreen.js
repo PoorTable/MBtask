@@ -49,6 +49,7 @@ const DailyScreen = ({ navigation }) => {
       getLoc();
     }
   };
+
   useEffect(() => {
     const unsubscribe = navigation
       .dangerouslyGetParent()
@@ -105,6 +106,7 @@ const DailyScreen = ({ navigation }) => {
     };
     f();
   }, []);
+  
   return (
     <SafeAreaView style={styles.fl}>
       {isLoading ? (

@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo/ngrok": "^2.4.3",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/material-bottom-tabs": "^5.3.14",
     "@react-navigation/native": "^5.9.3",
@@ -17,6 +18,7 @@
     "expo-permissions": "~10.0.0",
     "expo-splash-screen": "^0.9.0",
     "expo-status-bar": "~1.0.3",
+    "globally": "*",
     "moment": "^2.29.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",

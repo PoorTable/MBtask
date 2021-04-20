@@ -99,10 +99,8 @@ const DailyScreen = ({ navigation }) => {
 
   useEffect(() => {
     let f = async () => {
-      setisLoading(true);
       await getPermStatus();
       getLoc();
-      setisLoading(false);
     };
     f();
   }, []);

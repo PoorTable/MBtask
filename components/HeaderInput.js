@@ -4,7 +4,6 @@ import {
   StyleSheet,
   SafeAreaView,
   View,
-  Platform,
   TouchableOpacity,
 } from "react-native";
 import { EvilIcons, Ionicons } from "@expo/vector-icons";

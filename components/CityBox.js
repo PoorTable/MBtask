@@ -1,9 +1,7 @@
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
-  icon,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";

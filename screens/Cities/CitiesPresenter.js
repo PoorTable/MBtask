@@ -1,15 +1,15 @@
+
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { StyleSheet, Text, View, Image, FlatList, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import * as weatherActions from "../store/weatheractions";
+import * as weatherActions from "../../store/weatheractions";
 
-import HeaderInput from "../components/HeaderInput";
-import CityBox from "../components/CityBox";
-import CityLine from "../components/CityLine";
-import ModalActivityIndcator from "../components/ModalActivityIndicator";
+import CitiesView from './CitiesView';
+
 
 export default function CitiesScreen({ navigation }) {
-  useEffect(() => {
+
+   useEffect(() => {
     const unsubscribe = navigation
       .dangerouslyGetParent()
       .addListener("tabPress", (e) => {
@@ -97,70 +97,24 @@ export default function CitiesScreen({ navigation }) {
   const SelectCityHandler = async (City) => {
     navigation.navigate("SelectedCity", { City: City });
   };
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.searchBar}>
-        <HeaderInput
-          value={searchText}
-          onChangeText={(text) => changeTextHandler(text)}
-          isEmpty={isEmpty}
-          onClick={() => {
-            ClearText();
-          }}
-        />
-      </View>
-
-      {loading ? (
-        <ModalActivityIndcator show={true} />
-      ) : searchText === "" ? (
-        <FlatList
-          data={Cities}
-          renderItem={(itemData) => (
-            <CityBox
-              cityName={itemData.item.name}
-              temp={itemData.item.temperature}
-              wicon={itemData.item.wcondition}
-              isRefresh={isRefreshing}
-              onClick={() => {
-                SelectCityHandler(itemData.item);
-              }}
-            />
-          )}
-          numColumns={2}
-          refreshing={isRefreshing}
-          onRefresh={() => {
-            pTRHandler();
-          }}
-        />
-      ) : Citiy.name === undefined ? (
-        <View style={styles.container}>
-          <View style={styles.centred}>
-            <Image source={require("../assets/NoData.png")} />
-            <Text style={styles.text}>No data for {Citiy.id}</Text>
-          </View>
-        </View>
-      ) : (
-        <View style={styles.container}>
-          <View style={styles.sr}>
-            <Text style={styles.text}>Search results</Text>
-          </View>
-          <View style={styles.results}>
-            <CityLine
-              onClick={() => {
-                SelectCityHandler(Citiy);
-              }}
-              name={Citiy.name}
-              temp={Citiy.temperature}
-              wicon={Citiy.wcondition}
-            />
-          </View>
-        </View>
-      )}
-    </View>
-  );
+  return(
+    <CitiesView 
+    pTRHandler={pTRHandler}
+    SelectCityHandler={SelectCityHandler}
+    ClearText={ClearText}
+    Cities={Cities}
+    Citiy={Citiy}
+    loading={loading}
+    loaded = {loaded}
+    searchText={searchText}
+    isRefreshing={isRefreshing}
+    changeTextHandler={changeTextHandler}
+    isEmpty={isEmpty}
+    />
+  )
 }
-
-
-
-
+export const screenOptions = (navData) => {
+    return {
+      headerShown: false,
+    };
+  };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Modal, ActivityIndicator } from "react-native";
 
 const ModalActivityIndicator = (props) => {

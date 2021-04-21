@@ -18,6 +18,7 @@ import moment from "moment";
 
 import CityLine from "../components/CityLine";
 import ModalActivityIndcator from "../components/ModalActivityIndicator";
+import NoData from '../components/NoData';
 
 const HourlyScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
@@ -141,16 +142,7 @@ const HourlyScreen = ({ navigation }) => {
           </View>
         </View>
       ) : (
-        <View style={styles.container}>
-          <Image source={require("../assets/NoData.png")} />
-          <Text style={styles.Name}>Data is not Availble</Text>
-          <Text style={styles.descr}>
-            Cannnot determine Your current location
-          </Text>
-          <TouchableOpacity onPress={getPerm} title="" style={styles.access}>
-            <Text style={styles.text}>Allow access</Text>
-          </TouchableOpacity>
-        </View>
+        <NoData onPress={getPerm} />
       )}
     </SafeAreaView>
   );

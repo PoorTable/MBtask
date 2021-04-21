@@ -1,11 +1,8 @@
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
-  icon,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import React from "react";
 import { Fontisto } from "@expo/vector-icons";

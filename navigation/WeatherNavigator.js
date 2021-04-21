@@ -7,9 +7,9 @@ import {
 } from "@react-navigation/stack";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
-import CitiesScreen, {
+import CitiesPresenter, {
   screenOptions as CitiesScreenOptions,
-} from "../screens/CitiesScreen";
+} from "../screens/Cities/CitiesPresenter";
 import DailyScreen, {
   screenOptions as DailyScreenOptions,
 } from "../screens/DailyScreen";
@@ -39,7 +39,7 @@ export const WS = () => {
     >
       <WeatherStack.Screen
         name="Cities"
-        component={CitiesScreen}
+        component={CitiesPresenter}
         options={CitiesScreenOptions}
       />
       <WeatherStack.Screen

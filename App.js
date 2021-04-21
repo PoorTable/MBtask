@@ -10,10 +10,13 @@ import ReduxThunk from "redux-thunk";
 import * as SplashScreen from "expo-splash-screen";
 
 import weatherreducer from "./store/weatherreducer";
+import dailyhoutlyreducer from './store/dailyhourlyreducer';
 import * as weatherActions from "./store/weatheractions";
+import * as dailyhourlyactions from './store/dailyhourlyactions';
 
 const rootReducer = combineReducers({
   weather: weatherreducer,
+  dailyhoutly: dailyhoutlyreducer
 });
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 

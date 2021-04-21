@@ -13,7 +13,7 @@ import {
 import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
-import * as weatherActions from "../store/weatheractions";
+import * as dailyhourlyactions from "../store/dailyhourlyactions";
 import moment from "moment";
 
 import CityLine from "../components/CityLine";
@@ -24,7 +24,7 @@ const HourlyScreen = ({ navigation }) => {
   const [ps, setPs] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const dispatch = useDispatch();
-  const Cities = useSelector((state) => state.weather.Hourly);
+  const Cities = useSelector((state) => state.dailyhoutly.Hourly);
   const np = useSelector((state) => state.weather.notPerm);
   var Cities1 = Cities;
   const getPerm = async () => {
@@ -81,7 +81,6 @@ const HourlyScreen = ({ navigation }) => {
       setLocation(loca);
     } catch {
       setPs(false);
-      weatherActions.setPermission();
       Cities1 = [];
       console.log(Cities1);
       setisLoading(false);
@@ -89,10 +88,10 @@ const HourlyScreen = ({ navigation }) => {
     }
     try {
       await dispatch(
-        weatherActions.getCityName(loca.coords.latitude, loca.coords.longitude)
+        dailyhourlyactions.getCityName(loca.coords.latitude, loca.coords.longitude)
       );
       await dispatch(
-        weatherActions.selectDH(loca.coords.latitude, loca.coords.longitude)
+        dailyhourlyactions.selectDH(loca.coords.latitude, loca.coords.longitude)
       );
       setisLoading(false);
       return;
@@ -200,7 +199,7 @@ const styles = StyleSheet.create({
 });
 
 export const screenOptions = (navData) => {
-  const tit = useSelector((state) => state.weather.CityName);
+  const tit = useSelector((state) => state.dailyhoutly.CityName);
   const date = moment(new Date()).format("MMMM, Do");
   return {
     title: tit + " - " + date,

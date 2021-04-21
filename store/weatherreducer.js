@@ -3,9 +3,8 @@ import {
   GET_CITY,
   SELECT_CITY,
   NERROR,
-  SET_PERMISSION,
-  SET_DH,
-  GET_CITY_NAME,
+  SET_LOADING,
+  SET_LOADED
 } from "./weatheractions";
 
 const initialState = {
@@ -16,26 +15,21 @@ const initialState = {
   CityName: "",
   Daily: [],
   Hourly: [],
-  notPerm: false,
+  isLoading: false,
+  isLoaded: true
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SET_DH:
-      return {
+    case SET_LOADED:
+      return{
         ...state,
-        Daily: action.Daily,
-        Hourly: action.Hourly,
-      };
-    case GET_CITY_NAME:
-      return {
+        isLoaded: action.isLoaded
+      }
+    case SET_LOADING:
+      return{
         ...state,
-        CityName: action.City.name,
-      };
-    case SET_PERMISSION:
-      return {
-        ...state,
-        notPerm: true,
+        isLoading: action.isLoading
       };
     case GET_CITIES:
       return {

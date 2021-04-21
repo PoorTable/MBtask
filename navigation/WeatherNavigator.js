@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, TextPropTypes } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import {
   createStackNavigator,
@@ -26,6 +26,11 @@ export const WS = () => {
   return (
     <WeatherStack.Navigator
       screenOptions={{
+        gestureEnabled: true,
+        gestureResponseDistance:{
+          horizontal: 200
+        },
+        gestureDirection:  'vertical-inverted',
         cardStyleInterpolator:
           Platform.OS === "Android"
             ? CardStyleInterpolators.forFadeFromBottomAndroid
@@ -51,6 +56,11 @@ export const DailyStack = () => {
   return (
     <DS.Navigator
       screenOptions={{
+        gestureEnabled: true,
+        gestureResponseDistance:{
+          horizontal: 200
+        },
+        gestureDirection:  'vertical-inverted',
         cardStyleInterpolator:
           Platform.OS === "Android"
             ? CardStyleInterpolators.forFadeFromBottomAndroid
@@ -70,6 +80,12 @@ export const HourlyStack = () => {
   return (
     <HS.Navigator
       screenOptions={{
+        gestureEnabled: true,
+        gestureResponseDistance:{
+          horizontal: 200
+        },
+        
+        gestureDirection:  'vertical-inverted',
         cardStyleInterpolator:
           Platform.OS === "Android"
             ? CardStyleInterpolators.forFadeFromBottomAndroid

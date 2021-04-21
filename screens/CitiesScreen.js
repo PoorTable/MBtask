@@ -24,12 +24,12 @@ export default function CitiesScreen({ navigation }) {
 
   const [searchText, setSeacrhText] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const dispatch = useDispatch();
   const Cities = useSelector((state) => state.weather.cities);
   var Citiy = useSelector((state) => state.weather.city);
+  const loading = useSelector((state)=> state.weather.isLoading);
+  const loaded = useSelector((state)=> state.weather.isLoaded);
 
   const timerRef = useRef(null);
   const changeTextHandler = (text) => {
@@ -37,15 +37,25 @@ export default function CitiesScreen({ navigation }) {
   };
 
   const ClearText = () => {
-    setIsLoaded(false);
+    dispatch(weatherActions.setIsLoaded(false));
     setSeacrhText("");
     Citiy = null;
   };
 
+  function isSymbols(input) {
+    return input.replace(/\[.,?:;$!@#$%^&*()+_~`±§]*/g,'').length < 1;
+  }
+
   function isNullOrWhitespace(input) {
     if (typeof input === "undefined" || input == null) return true;
+    if(!isSymbols(input)){
+      if(!input.replace(/\s/g, "").length < 1){
+        return input.replace(/\d/g, "").length < 1;
+      }
+    }
+    
+    
 
-    return input.replace(/\s/g, "").length < 1;
   }
 
   useEffect(() => {
@@ -53,18 +63,17 @@ export default function CitiesScreen({ navigation }) {
 
     if (!isNullOrWhitespace(searchText)) {
       clearTimeout(timerRef.current);
-      setSeacrhText(searchText.trim());
+      
       timerRef.current = setTimeout(async () => {
         try {
-          setIsLoading(true);
+          setSeacrhText(searchText.trim());
           await dispatch(weatherActions.fetchCity(searchText));
         } catch (error) {
           Alert.alert("Error", "Something went wrong during network call", [
             { text: "Okay" },
           ]);
         } finally {
-          setIsLoading(false);
-          setIsLoaded(true);
+          
         }
         Citiy = console.log(Citiy);
       }, 500);
@@ -76,14 +85,12 @@ export default function CitiesScreen({ navigation }) {
 
   const pTRHandler = async () => {
     try {
-      setIsLoading(true);
       await dispatch(weatherActions.fetchCities());
     } catch (error) {
       Alert.alert("Error", "Something went wrong during network call", [
         { text: "Okay" },
       ]);
     } finally {
-      setIsLoading(false);
     }
   };
 
@@ -104,7 +111,7 @@ export default function CitiesScreen({ navigation }) {
         />
       </View>
 
-      {isLoading ? (
+      {loading ? (
         <ModalActivityIndcator show={true} />
       ) : searchText === "" ? (
         <FlatList
@@ -126,10 +133,6 @@ export default function CitiesScreen({ navigation }) {
             pTRHandler();
           }}
         />
-      ) : !isLoaded ? (
-        <View>
-          <Text></Text>
-        </View>
       ) : Citiy.name === undefined ? (
         <View style={styles.container}>
           <View style={styles.centred}>

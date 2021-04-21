@@ -13,9 +13,9 @@ import CitiesPresenter, {
 import DailyPresenter, {
   screenOptions as DailyScreenOptions,
 } from "../screens/Daily/DailyPresenter";
-import HourlyScreen, {
+import HourlyPresenter, {
   screenOptions as HourlyScreenOptions,
-} from "../screens/HourlyScreen";
+} from "../screens/Hourly/HourlyPresenter";
 import SelectedCityScreen, {
   screenOptions as SelectedCityScreenOptions,
 } from "../screens/SelectedCityScreen";
@@ -94,7 +94,7 @@ export const HourlyStack = () => {
     >
       <HS.Screen
         name="Hourly"
-        component={HourlyScreen}
+        component={HourlyPresenter}
         options={HourlyScreenOptions}
       />
     </HS.Navigator>

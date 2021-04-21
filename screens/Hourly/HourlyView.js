@@ -1,22 +1,19 @@
-import React, { useEffect, useState } from "react";
-
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  Alert,
-  Image,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
 import moment from "moment";
+import React from "react";
+import {
+    FlatList, SafeAreaView,
+    StyleSheet,
 
+    View
+} from "react-native";
+import { useSelector } from "react-redux";
 import CityLine from "../../components/CityLine";
 import ModalActivityIndcator from "../../components/ModalActivityIndicator";
 import NoData from '../../components/NoData';
 
-const DailyView = ( props ) => {
+
+
+const HourlyView = (props) => {
     const{
         ps,
         isLoading,
@@ -35,8 +32,8 @@ const DailyView = ( props ) => {
               data={Cities}
               renderItem={(itemData) => (
                 <CityLine
-                  name={moment(new Date(itemData.item.time)).format("MMMM, Do")}
-                  temp={itemData.item.temperature.day}
+                  name={moment(new Date(itemData.item.time)).format("LT")}
+                  temp={itemData.item.temperature}
                   wicon={itemData.item.wcondition}
                   DH={true}
                 />
@@ -96,4 +93,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
 });
-export default DailyView;
+
+
+
+export default HourlyView;

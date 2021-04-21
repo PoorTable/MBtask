@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
-
-import {
-  Alert,
-} from "react-native";
-import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
-import { useSelector, useDispatch } from "react-redux";
+import * as Permissions from "expo-permissions";
+import moment from "moment";
+import {
+    Alert
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import * as dailyhourlyactions from "../../store/dailyhourlyactions";
+import HourlyView from './HourlyView';
 
-import DailyView from './DailyView';
 
-export default function DailyPresenter ({ navigation }) {
+const HourlyPresenter = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [ps, setPs] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const dispatch = useDispatch();
-  const Cities = useSelector((state) => state.dailyhoutly.Daily);
+  const Cities = useSelector((state) => state.dailyhoutly.Hourly);
+  const np = useSelector((state) => state.weather.notPerm);
   var Cities1 = Cities;
   const getPerm = async () => {
     const { status, permissions } = await Permissions.askAsync(
@@ -27,7 +28,7 @@ export default function DailyPresenter ({ navigation }) {
     } else {
       setPs(false);
     }
-  };
+  }; 
 
   const getPermStatus = async () => {
     const { status, expires, permissions } = await Permissions.getAsync(
@@ -47,7 +48,18 @@ export default function DailyPresenter ({ navigation }) {
       .addListener("tabPress", (e) => {
         e.preventDefault();
         getPermStatus();
-        navigation.navigate("Daily");
+
+        if (ps) {
+          setisLoading(true);
+          try {
+            getLoc();
+          } catch {
+          } finally {
+            setisLoading(false);
+          }
+        }
+
+        navigation.navigate("Hourly");
       });
 
     return unsubscribe;
@@ -94,25 +106,28 @@ export default function DailyPresenter ({ navigation }) {
     };
     f();
   }, []);
-
+  
   return (
-    <DailyView 
-        location={location}
-        ps={ps}
-        isLoading={isLoading}
-        pTRHandler={pTRHandler}
-        getLoc={getLoc}
-        Cities={Cities}
-        Cities1={Cities1}
-        getPerm={getPerm}
-        />
-  );
-}
+    <HourlyView 
+    location={location}
+    ps={ps}
+    isLoading={isLoading}
+    pTRHandler={pTRHandler}
+    getLoc={getLoc}
+    Cities={Cities}
+    Cities1={Cities1}
+    getPerm={getPerm}
+    />
+    )
+};
 
 export const screenOptions = (navData) => {
     const tit = useSelector((state) => state.dailyhoutly.CityName);
+    const date = moment(new Date()).format("MMMM, Do");
     return {
-      title: tit,
+      title: tit + " - " + date,
       headerTitleAlign: "left",
     };
-};
+  };
+
+export default HourlyPresenter;

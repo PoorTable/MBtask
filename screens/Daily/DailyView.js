@@ -58,6 +58,7 @@ const DailyView = ( props ) => {
 const styles = StyleSheet.create({
   fl: {
     flex: 1,
+    marginBottom: 15
   },
   Name: {
     paddingVertical: 5,

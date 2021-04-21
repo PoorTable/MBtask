@@ -6,11 +6,12 @@ import {
 import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
-import * as dailyhourlyactions from "../store/dailyhourlyactions";
+import * as dailyhourlyactions from "../../store/dailyhourlyactions";
 
 import DailyView from './DailyView';
 
 const DailyPresenter = ({ navigation }) => {
+
   const [location, setLocation] = useState(null);
   const [ps, setPs] = useState(false);
   const [isLoading, setisLoading] = useState(false);
@@ -100,6 +101,10 @@ const DailyPresenter = ({ navigation }) => {
         ps={ps}
         isLoading={isLoading}
         pTRHandler={pTRHandler}
+        getLoc={getLoc}
+        Cities={Cities}
+        Cities1={Cities1}
+        getPerm={getPerm}
         />
   );
 }

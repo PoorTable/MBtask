@@ -10,9 +10,9 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import CitiesPresenter, {
   screenOptions as CitiesScreenOptions,
 } from "../screens/Cities/CitiesPresenter";
-import DailyScreen, {
+import DailyPresenter, {
   screenOptions as DailyScreenOptions,
-} from "../screens/DailyScreen";
+} from "../screens/Daily/DailyPresenter";
 import HourlyScreen, {
   screenOptions as HourlyScreenOptions,
 } from "../screens/HourlyScreen";
@@ -69,7 +69,7 @@ export const DailyStack = () => {
     >
       <DS.Screen
         name="Daily"
-        component={DailyScreen}
+        component={DailyPresenter}
         options={DailyScreenOptions}
       />
     </DS.Navigator>

@@ -18,6 +18,16 @@ import NoData from '../components/NoData';
 
 const DailyView = ({ props }) => {
 
+    const{
+        location,
+        ps,
+        isLoading,
+        pTRHandler,
+        getLoc,
+        Cities,
+        Cities1,
+        getPerm,
+    }=props
   return (
     <SafeAreaView style={styles.fl}>
       {isLoading ? (

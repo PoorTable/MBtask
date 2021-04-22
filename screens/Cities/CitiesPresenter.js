@@ -52,10 +52,7 @@ export default function CitiesScreen({ navigation }) {
       if(!input.replace(/\s/g, "").length < 1){
         return input.replace(/\d/g, "").length < 1;
       }
-    }
-    
-    
-
+    }   
   }
 
   useEffect(() => {
@@ -77,9 +74,15 @@ export default function CitiesScreen({ navigation }) {
         }
         Citiy = console.log(Citiy);
       }, 500);
-      if (searchText === "") {
+      if (searchText.length<2) {
         clearTimeout(timerRef.current);
       }
+      if(isNullOrWhitespace(searchText)){
+        clearTimeout(timerRef.current);
+      }
+    }
+    else{
+      clearTimeout(timerRef.current);
     }
   }, [searchText]);
 

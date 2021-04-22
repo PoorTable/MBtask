@@ -31,6 +31,7 @@ const DailyView = ( props ) => {
       ) : ps ? (
         <View>
           <View style={styles.sr}>
+            <Text> dsa </Text>
             <FlatList
               data={Cities}
               renderItem={(itemData) => (

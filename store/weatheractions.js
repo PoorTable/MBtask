@@ -16,7 +16,10 @@ export const selectCity = (City) => {
 
 export const fetchCities = () => {
   return async (dispatch, getState) => {
-    dispatch({type:SET_LOADING, isLoading: true});
+    if (getState().weather.cities.length > 0){
+      dispatch({type:SET_LOADING, isLoading: true});
+    }
+    
     
     const response = await fetch(
       `http://api.openweathermap.org/data/2.5/box/city?bbox=26,49,27,52,10&appid=${apik}`
@@ -46,7 +49,7 @@ export const fetchCities = () => {
     
     dispatch({ type: GET_CITIES, City: loadedCity });
     dispatch({type:SET_LOADING, isLoading: false});
-    
+    dispatch({type:SET_LOADED, isLoaded: true});
   };
 };
 
@@ -63,7 +66,7 @@ export const fetchCity = (searchText) => {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${searchText}&units=metric&appid=${apik}`
     );
-console.log('das');
+  console.log('das');
     console.log(response.status);
     if (!response.ok) {
       var loadedCity = new City(searchText, response.message, 1, searchText, 1);
@@ -82,8 +85,8 @@ console.log('das');
 
       
     }
-    dispatch({ type: GET_CITY, City: loadedCity });
+      dispatch({ type: GET_CITY, City: loadedCity });  
       dispatch({type:SET_LOADING, isLoading: false});
-      dispatch({type:SET_LOADED, isLoaded: false});
+      dispatch({type:SET_LOADED, isLoaded: true});
   };
 };

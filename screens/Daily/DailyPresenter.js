@@ -75,7 +75,7 @@ export default function DailyPresenter ({ navigation }) {
       setisLoading(false);
       return;
     } catch (error) {
-      Alert.alert("Error", "Something went wrong during network call", [
+      Alert.alert("Error1", "Something went wrong during network call", [
         { text: "Okay" },
       ]);
     } finally {

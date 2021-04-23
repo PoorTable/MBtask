@@ -47,21 +47,7 @@ const HourlyPresenter = ({ navigation }) => {
 
   
 
-  const tit = useSelector((state) => state.dailyhoutly.City.name);
-  const City = useSelector((state) => state.dailyhoutly.dt);
-  const date = moment(City+86400000).format("MMMM, Do");
-  useEffect(() => {
-    const unsubscribe = navigation
-      .addListener('focus', () => {  
-        
-        navigation.dangerouslyGetParent().setOptions({
-            headerTitle: tit + " - " + date,
-            headerTitleAlign: "left",
-        });
-    });
-
-    return unsubscribe;
-  }, [navigation]);
+  
 
   const getLoc = async () => {
     setisLoading(true);
@@ -79,18 +65,10 @@ const HourlyPresenter = ({ navigation }) => {
       await dispatch(
         dailyhourlyactions.getCityName(loca.coords.latitude, loca.coords.longitude)
       );
-      console.log(SelectedDay);
-      if(SelectedDay==="Today"){
+      console.log(SelectedDay);     
         await dispatch(
           dailyhourlyactions.selectDH(loca.coords.latitude, loca.coords.longitude)
-        );
-      }
-      else{
-        await dispatch(
-          dailyhourlyactions.getYesterday(loca.coords.latitude, loca.coords.longitude)
-        );
-      }
-      
+        );     
       setisLoading(false);
       return;
     } catch (error) {
@@ -114,6 +92,23 @@ const HourlyPresenter = ({ navigation }) => {
     f();
   }, []);
   
+  const tit = useSelector((state) => state.dailyhoutly.City.name);
+  const City = useSelector((state) => state.dailyhoutly.dt);
+  const date = moment(Date.now()).format("MMMM, Do");
+  useEffect(() => {
+    const unsubscribe = navigation
+      .addListener('focus', () => {  
+        
+        navigation.dangerouslyGetParent().setOptions({
+            headerTitle: tit + " - " + date,
+            headerTitleAlign: "left",
+        });
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+
   return (
     <HourlyView 
     location={location}

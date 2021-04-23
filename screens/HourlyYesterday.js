@@ -77,8 +77,11 @@ const HourlyYesterday = ({ navigation }) => {
       setisLoading(false);
     }
   };
+
+
   const tit = useSelector((state) => state.dailyhoutly.City.name);
-  const date = moment(Date.now()-86400000).format("MMMM, Do");
+  const City = useSelector((state) => state.dailyhoutly.dt);
+  const date = moment(City-86400000).format("MMMM, Do");
   useEffect(() => {
     const unsubscribe = navigation
       .addListener('focus', () => {  

@@ -1,17 +1,20 @@
 import moment from "moment";
-import React from "react";
+import React, { useEffect,useState } from "react";
 import {
     FlatList, SafeAreaView,
     StyleSheet,
     TouchableOpacity,
     Text,
+    useCallback,
     View
 } from "react-native";
 import { useSelector } from "react-redux";
 import CityLine from "../../components/CityLine";
 import ModalActivityIndcator from "../../components/ModalActivityIndicator";
 import NoData from '../../components/NoData';
-import Swiper from 'react-native-swiper'
+import Swiper from 'react-native-swiper';
+import * as dailyhourlyactions from "../../store/dailyhourlyactions";
+import { useDispatch } from "react-redux";
 
 
 
@@ -22,17 +25,16 @@ const HourlyView = (props) => {
         pTRHandler,
         Cities,
         getPerm,
+        Cities2,
+        np
     }=props
+    
   return (
     <SafeAreaView style={styles.fl}>
       {isLoading ? (
         <ModalActivityIndcator show={true} />
       ) : ps ? (
-        <Swiper style={styles.wrapper} index={1}>
         <View style={styles.sr}>
-          <View>
-            <Text style={styles.Name}>Yesterday</Text>
-          </View>
            <FlatList
              data={Cities}
              renderItem={(itemData) => (
@@ -49,13 +51,17 @@ const HourlyView = (props) => {
              }}
            />
         </View>
-        <View style={styles.slide2}>
-          <Text style={styles.text}>Beautiful</Text>
-        </View>
-      </Swiper>
-     
-      ) : (
+      ) : !np ? (
         <NoData onPress={getPerm} />
+      ): (
+        <View style={styles.container}>
+        <Image source={require("../../assets/NoData.png")} />
+        <Text style={styles.Name}>Cannot get an update</Text>
+
+        <Text style={styles.descr}>
+            Please check your connection to the internet
+        </Text>
+    </View>
       )}
     </SafeAreaView>
   );
@@ -96,6 +102,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   sr: {
+    flex:1,
     marginVertical: 10,
     width: "100%",
     marginStart: "5%",

@@ -2,21 +2,42 @@ import {
     SET_DH,
     GET_CITY_NAME,
     GET_YESTERDAY,
+    SELECT_DAY,
+    SET_DATE,
+    NERROR,
   } from "./dailyhourlyactions";
 
   const initialState = {
-    CityName: "",
+    City: {},
     Daily: [],
     Hourly: [],
     Yesterday: [],
+    SelectedDay: 'Today',
+    error: false,
+    dt: 0,
   };
 
   export default (state = initialState, action) => {
     switch (action.type) {
+      case NERROR:
+        return{
+          ...state,
+          error: action.errorState
+        }
+      case SET_DATE:
+        return{
+          ...state,
+          dt: action.dt
+        }
+      case SELECT_DAY:
+        return{
+          ...state,
+          SelectedDay: action.Day,
+        }
       case GET_YESTERDAY:
         return{
           ...state,
-          Yesterday: action.Yesterday
+          Yesterday: action.Yesterday,
         }
       case SET_DH:
         return {
@@ -27,7 +48,7 @@ import {
       case GET_CITY_NAME:
         return {
           ...state,
-          CityName: action.City.name,
+          City: action.City,
         };
         default:
       return state;

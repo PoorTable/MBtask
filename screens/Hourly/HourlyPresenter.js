@@ -11,12 +11,15 @@ import HourlyView from './HourlyView';
 
 
 const HourlyPresenter = ({ navigation }) => {
+  
   const [location, setLocation] = useState(null);
   const [ps, setPs] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const dispatch = useDispatch();
-  const Cities = useSelector((state) => state.dailyhoutly.Yesterday);
-  const np = useSelector((state) => state.weather.notPerm);
+  const Cities2 = useSelector((state) => state.dailyhoutly.Yesterday);
+  const Cities = useSelector((state) => state.dailyhoutly.Hourly);
+  const SelectedDay = useSelector((state)=> state.dailyhoutly.SelectedDay)
+  const np = useSelector((state) => state.weather.error);
   var Cities1 = Cities;
   const getPerm = async () => {
     const { status, permissions } = await Permissions.askAsync(
@@ -42,14 +45,14 @@ const HourlyPresenter = ({ navigation }) => {
     }
   };
 
+  
+
   useEffect(() => {
     const unsubscribe = navigation
       .dangerouslyGetParent()
       .addListener("tabPress", (e) => {
         e.preventDefault();
-        getPermStatus();
-
-        if (ps) {
+        getPermStatus();       
           setisLoading(true);
           try {
             getLoc();
@@ -57,8 +60,6 @@ const HourlyPresenter = ({ navigation }) => {
           } finally {
             setisLoading(false);
           }
-        }
-
         navigation.navigate("Hourly");
       });
 
@@ -81,9 +82,18 @@ const HourlyPresenter = ({ navigation }) => {
       await dispatch(
         dailyhourlyactions.getCityName(loca.coords.latitude, loca.coords.longitude)
       );
-      await dispatch(
-        dailyhourlyactions.getYesterday(loca.coords.latitude, loca.coords.longitude)
-      );
+      console.log(SelectedDay);
+      if(SelectedDay==="Today"){
+        await dispatch(
+          dailyhourlyactions.selectDH(loca.coords.latitude, loca.coords.longitude)
+        );
+      }
+      else{
+        await dispatch(
+          dailyhourlyactions.getYesterday(loca.coords.latitude, loca.coords.longitude)
+        );
+      }
+      
       setisLoading(false);
       return;
     } catch (error) {
@@ -117,6 +127,8 @@ const HourlyPresenter = ({ navigation }) => {
     Cities={Cities}
     Cities1={Cities1}
     getPerm={getPerm}
+    np = {np}
+    Cities2={Cities2}
     />
     )
 };

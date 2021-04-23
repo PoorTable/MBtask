@@ -6,10 +6,16 @@ import {
   CardStyleInterpolators,
 } from "@react-navigation/stack";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import moment from "moment";
 
+import { useSelector } from "react-redux";
 import CitiesPresenter, {
   screenOptions as CitiesScreenOptions,
 } from "../screens/Cities/CitiesPresenter";
+import HourlyYesterday, {
+  screenOptions as HYScreenOptions,
+} from '../screens/HourlyYesterday';
 import DailyPresenter, {
   screenOptions as DailyScreenOptions,
 } from "../screens/Daily/DailyPresenter";
@@ -75,8 +81,23 @@ export const DailyStack = () => {
     </DS.Navigator>
   );
 };
+
+const HourlyTTS = createStackNavigator();
+const HourlyTT = createMaterialTopTabNavigator();
+export const HourlyTopTab = () => {
+    return (
+        <HourlyTT.Navigator initialRouteName="Today">
+          <HourlyTT.Screen name="Yseterday" component={HourlyYesterday} />
+          <HourlyTT.Screen name="Today" component={HourlyPresenter} />
+        </HourlyTT.Navigator>
+    );
+}
+
 const HS = createStackNavigator();
 export const HourlyStack = () => {
+  const tit = useSelector((state) => state.dailyhoutly.City);
+  const City = useSelector((state) => state.dailyhoutly.dt);
+  const date = moment(City).format("MMMM, Do");
   return (
     <HS.Navigator
       screenOptions={{
@@ -94,8 +115,12 @@ export const HourlyStack = () => {
     >
       <HS.Screen
         name="Hourly"
-        component={HourlyPresenter}
-        options={HourlyScreenOptions}
+        component={HourlyTopTab}
+        options={{
+            title: tit.name + ' ' + date,
+            headerTitleAlign: "left",
+          }
+        }
       />
     </HS.Navigator>
   );

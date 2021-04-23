@@ -2,7 +2,6 @@ import {
   GET_CITIES,
   GET_CITY,
   SELECT_CITY,
-  NERROR,
   SET_LOADING,
   SET_LOADED
 } from "./weatheractions";
@@ -11,7 +10,6 @@ const initialState = {
   cities: [],
   city: {},
   selectedCity: {},
-  error: false,
   CityName: "",
   Daily: [],
   Hourly: [],
@@ -46,11 +44,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         selectedCity: action.City,
-      };
-    case NERROR:
-      return {
-        ...state,
-        error: true,
       };
     default:
       return state;

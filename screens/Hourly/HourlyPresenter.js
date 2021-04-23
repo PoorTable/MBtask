@@ -15,7 +15,7 @@ const HourlyPresenter = ({ navigation }) => {
   const [ps, setPs] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const dispatch = useDispatch();
-  const Cities = useSelector((state) => state.dailyhoutly.Hourly);
+  const Cities = useSelector((state) => state.dailyhoutly.Yesterday);
   const np = useSelector((state) => state.weather.notPerm);
   var Cities1 = Cities;
   const getPerm = async () => {
@@ -82,7 +82,7 @@ const HourlyPresenter = ({ navigation }) => {
         dailyhourlyactions.getCityName(loca.coords.latitude, loca.coords.longitude)
       );
       await dispatch(
-        dailyhourlyactions.selectDH(loca.coords.latitude, loca.coords.longitude)
+        dailyhourlyactions.getYesterday(loca.coords.latitude, loca.coords.longitude)
       );
       setisLoading(false);
       return;

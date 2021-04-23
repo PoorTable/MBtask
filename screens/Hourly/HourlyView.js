@@ -3,13 +3,15 @@ import React from "react";
 import {
     FlatList, SafeAreaView,
     StyleSheet,
-
+    TouchableOpacity,
+    Text,
     View
 } from "react-native";
 import { useSelector } from "react-redux";
 import CityLine from "../../components/CityLine";
 import ModalActivityIndcator from "../../components/ModalActivityIndicator";
 import NoData from '../../components/NoData';
+import Swiper from 'react-native-swiper'
 
 
 
@@ -26,25 +28,32 @@ const HourlyView = (props) => {
       {isLoading ? (
         <ModalActivityIndcator show={true} />
       ) : ps ? (
-        <View>
-          <View style={styles.sr}>
-            <FlatList
-              data={Cities}
-              renderItem={(itemData) => (
-                <CityLine
-                  name={moment(new Date(itemData.item.time)).format("LT")}
-                  temp={itemData.item.temperature}
-                  wicon={itemData.item.wcondition}
-                  DH={true}
-                />
-              )}
-              refreshing={isLoading}
-              onRefresh={() => {
-                pTRHandler();
-              }}
-            />
+        <Swiper style={styles.wrapper} index={1}>
+        <View style={styles.sr}>
+          <View>
+            <Text style={styles.Name}>Yesterday</Text>
           </View>
+           <FlatList
+             data={Cities}
+             renderItem={(itemData) => (
+               <CityLine
+                 name={moment(new Date(itemData.item.time)).format("LT")}
+                 temp={itemData.item.temperature}
+                 wicon={itemData.item.wcondition}
+                 DH={true}
+               />
+             )}
+             refreshing={isLoading}
+             onRefresh={() => {
+               pTRHandler();
+             }}
+           />
         </View>
+        <View style={styles.slide2}>
+          <Text style={styles.text}>Beautiful</Text>
+        </View>
+      </Swiper>
+     
       ) : (
         <NoData onPress={getPerm} />
       )}
@@ -53,6 +62,9 @@ const HourlyView = (props) => {
 };
 
 const styles = StyleSheet.create({
+  centred:{
+    width:'40%',
+  },
   fl: {
     flex: 1,
     marginBottom: 15

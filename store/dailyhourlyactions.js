@@ -2,8 +2,40 @@ import City from "../models/City";
 
 export const SET_DH = "SET_DH";
 export const GET_CITY_NAME = "SET_CITY_NAME";
+export const GET_YESTERDAY = "GET_YESTERDAY"
 
 const apik = "2ecc8cdc74d9e8fdb6f53505f378ea75";
+
+export const getYesterday = (lat, lon) => {
+  return async (dispatch, getState) => {
+    let date = Math.floor((Date.now() - 86400000)/1000);
+    console.log(date);
+    const response = await fetch(
+      `http://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${date}&units=metric&appid=${apik}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+    
+    const resData = await response.json();
+    console.log(resData.hourly);
+    const Hourly = resData.hourly;
+    const loadedYesterday = [];
+    Hourly.forEach((element) => {
+        loadedYesterday.push(
+          new City(
+            Math.random().toString(),
+            1,
+            element.temp,
+            element.weather[0].icon,
+            element.dt-10800
+          )
+        );
+    });
+    dispatch({ type: GET_YESTERDAY, Yesterday: loadedYesterday });
+  };
+}
 
 export const getCityName = (lat, lon) => {
     return async (dispatch, getState) => {
@@ -39,7 +71,7 @@ export const getCityName = (lat, lon) => {
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
-      console.log(response.status);
+      console.log(response.json);
       const resData = await response.json();
       const Hourly = resData.hourly.slice(0, 24);
       const loadedHourly = [];
@@ -72,7 +104,7 @@ export const getCityName = (lat, lon) => {
           )
         );
       });
-      console.log(loadedHourly);
+      
       dispatch({ type: SET_DH, Daily: loaded, Hourly: loadedHourly });
     };
   };

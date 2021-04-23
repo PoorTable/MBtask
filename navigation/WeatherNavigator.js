@@ -100,18 +100,7 @@ export const HourlyStack = () => {
   const date = moment(City).format("MMMM, Do");
   return (
     <HS.Navigator
-      screenOptions={{
-        gestureEnabled: true,
-        gestureResponseDistance:{
-          horizontal: 200
-        },
-        
-        gestureDirection:  'vertical-inverted',
-        cardStyleInterpolator:
-          Platform.OS === "Android"
-            ? CardStyleInterpolators.forFadeFromBottomAndroid
-            : CardStyleInterpolators.forVerticalIOS,
-      }}
+      
     >
       <HS.Screen
         name="Hourly"

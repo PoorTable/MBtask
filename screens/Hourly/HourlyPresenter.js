@@ -47,21 +47,18 @@ const HourlyPresenter = ({ navigation }) => {
 
   
 
+  const tit = useSelector((state) => state.dailyhoutly.City.name);
+  const City = useSelector((state) => state.dailyhoutly.dt);
+  const date = moment(City+86400000).format("MMMM, Do");
   useEffect(() => {
     const unsubscribe = navigation
-      .dangerouslyGetParent()
-      .addListener("tabPress", (e) => {
-        e.preventDefault();
-        getPermStatus();       
-          setisLoading(true);
-          try {
-            getLoc();
-          } catch {
-          } finally {
-            setisLoading(false);
-          }
-        navigation.navigate("Hourly");
-      });
+      .addListener('focus', () => {  
+        
+        navigation.dangerouslyGetParent().setOptions({
+            headerTitle: tit + " - " + date,
+            headerTitleAlign: "left",
+        });
+    });
 
     return unsubscribe;
   }, [navigation]);

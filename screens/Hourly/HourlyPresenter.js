@@ -88,7 +88,7 @@ const HourlyPresenter = ({ navigation }) => {
       return;
     } catch (error) {
       Alert.alert("Error", "Something went wrong during network call", [
-        { text: "Okay" },
+        { text: "OK" },
       ]);
     } finally {
       setisLoading(false);

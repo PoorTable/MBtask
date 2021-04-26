@@ -82,7 +82,6 @@ export const DailyStack = () => {
   );
 };
 
-const HourlyTTS = createStackNavigator();
 const HourlyTT = createMaterialTopTabNavigator();
 export const HourlyTopTab = () => {
     return (

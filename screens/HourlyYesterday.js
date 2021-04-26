@@ -102,7 +102,7 @@ const HourlyYesterday = ({ navigation }) => {
   useEffect(() => {
     let f = async () => {
       await getPermStatus();
-      getLoc();
+      await getLoc();
     };
     f();
   }, []);
@@ -127,7 +127,7 @@ export const screenOptions = (navData) => {
     const tit = useSelector((state) => state.dailyhoutly.CityName);
     const date = moment(new Date()).format("MMMM, Do");
     return {
-      title: tit + " -1 " + date,
+      title: tit + " - " + date,
       headerTitleAlign: "left",
     };
   };
